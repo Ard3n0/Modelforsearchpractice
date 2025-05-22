@@ -38,7 +38,7 @@ class MLP(nn.Module):
 
 
 mlp = MLP()
-print("MLP model initialized")
+print("инизиализируем mlp модель")
 
 
 class TransformerModel(nn.Module):
@@ -56,10 +56,10 @@ class TransformerModel(nn.Module):
 
 
 transformer = TransformerModel()
-print("Transformer model initialized")
+print("инициализируем трансформенную модель")
 
 meta_model = LogisticRegression()
-print("Logistic Regression meta-model initialized")
+print("инициализируем логистически регрессионную мета модель")
 
 if __name__ == "__main__":
     test_text_emb = np.random.rand(10, 100)  # 10 примеров, GloVe 100D

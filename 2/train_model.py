@@ -14,7 +14,7 @@ X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_st
 print(f"X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
 
 lr.fit(X_train, y_train)
-print(f"Linear Regression trained, score: {lr.score(X_val, y_val):.4f}")
+print(f"Результат тренировки линейной регрессий: {lr.score(X_val, y_val):.4f}")
 
 mlp_optimizer = optim.Adam(mlp.parameters(), lr=1e-3)
 criterion = nn.BCELoss()
@@ -30,7 +30,7 @@ for epoch in range(10):
         loss = criterion(outputs, batch_y.squeeze(-1))
         loss.backward()
         mlp_optimizer.step()
-    print(f"MLP Epoch {epoch+1}, Loss: {loss.item():.4f}")
+    print(f"MLP {epoch+1}, потери: {loss.item():.4f}")
 
 transformer_optimizer = optim.Adam(transformer.parameters(), lr=1e-4)
 transformer.train()
@@ -45,7 +45,7 @@ for epoch in range(10):
         loss = criterion(outputs, batch_y.squeeze(-1))
         loss.backward()
         transformer_optimizer.step()
-    print(f"Transformer Epoch {epoch+1}, Loss: {loss.item():.4f}")
+    print(f"Transformer {epoch+1}, потери: {loss.item():.4f}")
 
 lr_preds = lr.predict(X_val)
 mlp.eval()
@@ -55,10 +55,10 @@ transformer_preds = transformer(torch.tensor(X_val, dtype=torch.float32)).detach
 meta_features = np.column_stack((lr_preds, mlp_preds, transformer_preds))
 
 meta_model.fit(meta_features, y_val)
-print(f"Meta-model trained, score: {meta_model.score(meta_features, y_val):.4f}")
+print(f"Результат тренировки мета-модели: {meta_model.score(meta_features, y_val):.4f}")
 
 dump(lr, 'lr_model.joblib')
 torch.save(mlp.state_dict(), 'mlp_model.pth')
 torch.save(transformer.state_dict(), 'transformer_model.pth')
 dump(meta_model, 'meta_model.joblib')
-print("All models saved")
+print("Все модели сохранены в папку")
